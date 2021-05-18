@@ -1,24 +1,65 @@
-FROM phusion/baseimage:focal-1.0.0
+FROM ubuntu:latest
+
+USER root
 
 # Use baseimage-docker's init system.
-CMD ["/sbin/my_init"]
+#CMD ["/sbin/my_init"]libfuse2 lvm2 libmagic1 dmidecode  init sudo openssl
+
 
 COPY veeam-nosnap_5.0.0.4318_amd64.deb /tmp
 
-RUN apt-get update && apt-get install -y libfuse2 lvm2 libmagic1 dmidecode
+ENV DEBIAN_FRONTEND="noninteractive" TZ="Europe/Berlin"
+
+RUN echo 'Dir::Cache::pkgcache "";\nDir::Cache::srcpkgcache "";' | tee /etc/apt/apt.conf.d/00_disable-cache-files && \
+    apt-get update -y && \
+    apt-get install -y \
+        openssh-server \
+        perl \
+	augeas-tools \
+	libfuse2 lvm2 libmagic1 dmidecode  init sudo openssl && \
+    mkdir /root/.ssh && \
+    chmod 700 /root/.ssh && \
+    usermod -p '*' root && \
+    augtool set /files/etc/ssh/sshd_config/Ciphers/1 aes256-cbc && \
+    augtool set /files/etc/ssh/sshd_config/Ciphers/2 aes192-cbc && \
+    augtool set /files/etc/ssh/sshd_config/Ciphers/3 aes128-cbc && \
+    augtool set /files/etc/ssh/sshd_config/Ciphers/4 aes256-ctr && \
+    augtool set /files/etc/ssh/sshd_config/Ciphers/5 aes192-ctr && \
+    augtool set /files/etc/ssh/sshd_config/Ciphers/6 aes128-ctr && \
+    augtool set /files/etc/ssh/sshd_config/KexAlgorithms/1 diffie-hellman-group-exchange-sha256 && \
+    augtool set /files/etc/ssh/sshd_config/KexAlgorithms/2 diffie-hellman-group-exchange-sha1 && \
+    augtool set /files/etc/ssh/sshd_config/KexAlgorithms/3 diffie-hellman-group14-sha1 && \
+    augtool set /files/etc/ssh/sshd_config/KexAlgorithms/4 diffie-hellman-group1-sha1 && \
+    augtool set /files/etc/ssh/sshd_config/MACs/1 hmac-sha2-512 && \
+    augtool set /files/etc/ssh/sshd_config/MACs/2 hmac-sha2-256 && \
+    augtool set /files/etc/ssh/sshd_config/MACs/3 hmac-md5 && \
+    augtool set /files/etc/ssh/sshd_config/MACs/4 hmac-sha1 && \
+    augtool set /files/etc/ssh/sshd_config/PasswordAuthentication no && \
+    augtool set /files/etc/ssh/sshd_config/PermitRootLogin yes && \
+    rm -rf /var/cache/apt/* && \
+    rm -rf /var/log/* && \
+    mkdir -p /var/run/sshd
+
+
+COPY docker-entrypoint /usr/local/bin/
+RUN chmod 775 /usr/local/bin/docker-entrypoint
+
+EXPOSE 22
+
+RUN useradd -rm -d /home/veeam-backup -s /bin/bash -g root -G sudo  -p "$(openssl passwd -1 \#Backup01)" veeam-backup
 
 RUN dpkg -i /tmp/veeam-nosnap_5.0.0.4318_amd64.deb 
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN mkdir -p /etc/my_init.d
-COPY veeamservice /etc/my_init.d/veeamservice.sh
-RUN chmod +x /etc/my_init.d/veeamservice.sh
+RUN touch /usr/share/doc/veeam/3rdPartyNotices.txt
+RUN touch /usr/share/doc/veeam/EULA
 
-
-EXPOSE 10006/tcp 2500-3500
+EXPOSE 10006/tcp 2500-2600
 
 VOLUME ["/mnt"]
 
-#CMD ["cd /etc/init.d && service veeamservice start && cd && bash"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
+
+CMD ["/usr/bin/bash"]
 
