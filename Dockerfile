@@ -34,7 +34,7 @@ RUN echo 'Dir::Cache::pkgcache "";\nDir::Cache::srcpkgcache "";' | tee /etc/apt/
     augtool set /files/etc/ssh/sshd_config/MACs/2 hmac-sha2-256 && \
     augtool set /files/etc/ssh/sshd_config/MACs/3 hmac-md5 && \
     augtool set /files/etc/ssh/sshd_config/MACs/4 hmac-sha1 && \
-    augtool set /files/etc/ssh/sshd_config/PasswordAuthentication no && \
+    augtool set /files/etc/ssh/sshd_config/PasswordAuthentication yes && \
     augtool set /files/etc/ssh/sshd_config/PermitRootLogin yes && \
     rm -rf /var/cache/apt/* && \
     rm -rf /var/log/* && \
