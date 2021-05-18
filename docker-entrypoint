@@ -5,18 +5,11 @@ if ! ls /etc/ssh/ssh_host_* 1> /dev/null 2>&1; then
     ssh-keygen -A
 fi
 
-# first arg is `-f` or `--some-option`
-if [ "${1#-}" != "$1" ]; then
-	set -- sshd "$@"
-fi
-
 if ls /root/.ssh/authorized_keys 1> /dev/null 2>&1; then
   chown root:root /root/.ssh/authorized_keys
   chmod 600 /root/.ssh/authorized_keys
 fi
 
-
-service ssh start
 service veeamservice start
 
 exec "$@"

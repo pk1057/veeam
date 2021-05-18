@@ -61,5 +61,5 @@ VOLUME ["/mnt"]
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
 
-CMD ["/usr/bin/bash"]
+CMD [ "/usr/sbin/sshd", "-D", "-e"]
 
