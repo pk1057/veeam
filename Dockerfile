@@ -41,7 +41,8 @@ RUN    augtool set /etc/ssh/sshd_config/Ciphers/1 aes256-cbc && \
     augtool set /etc/ssh/sshd_config/PermitRootLogin yes
 
 RUN rm -rf /var/log/* && \
-    mkdir -p /var/run/sshd
+    mkdir -p /var/run/sshd && \
+    rum /run/nologin
 
 COPY docker-entrypoint /usr/local/bin/
 RUN chmod 775 /usr/local/bin/docker-entrypoint
