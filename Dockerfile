@@ -17,7 +17,7 @@ RUN   yum install -y \
 	perl-Data-Dumper \
 	mlocate \
 	augeas \
-	libfuse2 lvm2 libmagic1 dmidecode  init sudo openssl
+	libfuse2 lvm2 libmagic1 dmidecode  init sudo openssl sysvinit-tools
 
 RUN    mkdir /root/.ssh && \
     chmod 700 /root/.ssh && \
@@ -59,7 +59,7 @@ run echo "veeam-backup ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 #RUN touch /usr/share/doc/veeam/3rdPartyNotices.txt
 #RUN touch /usr/share/doc/veeam/EULA
 
-EXPOSE 10006/tcp 2500-2600
+EXPOSE 10006/tcp 2500-2600 6182
 
 VOLUME ["/mnt"]
 
