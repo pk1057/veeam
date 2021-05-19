@@ -1,4 +1,4 @@
-FROM centos:centos7
+FROM centos/systemd
 
 USER root
 
@@ -11,7 +11,7 @@ USER root
 #ENV DEBIAN_FRONTEND="noninteractive" TZ="Europe/Berlin"
 
 RUN   yum install -y \
-        openssh-server \
+        openssh-clients openssh-server \
         perl \
 	libsoap-lite-perl \
 	perl-Data-Dumper \
@@ -43,7 +43,6 @@ RUN    augtool set /etc/ssh/sshd_config/Ciphers/1 aes256-cbc && \
 RUN rm -rf /var/log/* && \
     mkdir -p /var/run/sshd
 
-
 COPY docker-entrypoint /usr/local/bin/
 RUN chmod 775 /usr/local/bin/docker-entrypoint
 
@@ -65,5 +64,5 @@ VOLUME ["/mnt"]
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
 
-CMD [ "/usr/sbin/sshd", "-D", "-e"]
-
+#CMD [ "/usr/sbin/sshd", "-D", "-e"]
+CMD ["/usr/sbin/init"]
