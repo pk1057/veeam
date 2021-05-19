@@ -41,8 +41,7 @@ RUN    augtool set /etc/ssh/sshd_config/Ciphers/1 aes256-cbc && \
     augtool set /etc/ssh/sshd_config/PermitRootLogin yes
 
 RUN rm -rf /var/log/* && \
-    mkdir -p /var/run/sshd && \
-    rum /run/nologin
+    mkdir -p /var/run/sshd
 
 COPY docker-entrypoint /usr/local/bin/
 RUN chmod 775 /usr/local/bin/docker-entrypoint
@@ -50,7 +49,7 @@ RUN chmod 775 /usr/local/bin/docker-entrypoint
 EXPOSE 22
 
 RUN useradd -rm -d /home/veeam-backup -s /bin/bash -g root -p "$(openssl passwd -1 \#Backup01)" veeam-backup
-run echo "veeam-backup ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN echo "veeam-backup ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 #RUN dpkg -i /tmp/veeam-nosnap_5.0.0.4318_amd64.deb 
 
@@ -59,11 +58,9 @@ run echo "veeam-backup ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 #RUN touch /usr/share/doc/veeam/3rdPartyNotices.txt
 #RUN touch /usr/share/doc/veeam/EULA
 
-EXPOSE 10006/tcp 2500-2600 6182
-
-VOLUME ["/mnt"]
+EXPOSE 10006/tcp 2500-2600 6162
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
 
 #CMD [ "/usr/sbin/sshd", "-D", "-e"]
-CMD ["/usr/sbin/init"]
+CMD ["/lib/systemd/systemd"]

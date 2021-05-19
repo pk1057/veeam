@@ -14,9 +14,12 @@ if ls /opt/veeam/transport/scripts/veeamtransport.service 1> /dev/null 2>&1; the
    systemctl enable /opt/veeam/transport/scripts/veeamtransport.service
 fi
 
+ln -s /dev/null /etc/tmpfiles.d/systemd-nologin.conf
+
 #systemctl status
 #systemctl start sshd 
 
 #service veeamservice start
 
 exec "$@"
+
