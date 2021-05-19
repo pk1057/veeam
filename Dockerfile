@@ -58,7 +58,7 @@ RUN echo "veeam-backup ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 #RUN touch /usr/share/doc/veeam/3rdPartyNotices.txt
 #RUN touch /usr/share/doc/veeam/EULA
 
-EXPOSE 10006/tcp 2500-2600 6162
+EXPOSE 10006/tcp 2500-2600/tcp 2500-2600/udp 6162
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
 
