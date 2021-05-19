@@ -16,10 +16,5 @@ fi
 
 ln -s /dev/null /etc/tmpfiles.d/systemd-nologin.conf
 
-#systemctl status
-#systemctl start sshd 
-
-#service veeamservice start
-
 exec "$@"
 
