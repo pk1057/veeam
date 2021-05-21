@@ -14,7 +14,9 @@ if ls /opt/veeam/transport/scripts/veeamtransport.service 1> /dev/null 2>&1; the
    systemctl enable /opt/veeam/transport/scripts/veeamtransport.service
 fi
 
-ln -s /dev/null /etc/tmpfiles.d/systemd-nologin.conf
+if ! ls /etc/tmpfiles.d/systemd-nologin.conf 1> /dev/null 2>&1; then
+  ln -s /dev/null /etc/tmpfiles.d/systemd-nologin.conf
+fi
 
 exec "$@"
 
