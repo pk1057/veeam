@@ -27,6 +27,7 @@ RUN useradd -rm -d /home/veeam-backup -s /bin/bash -g root -p "$(openssl passwd 
 RUN echo "veeam-backup ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 EXPOSE 10006/tcp 2500-2550/tcp 2500-2550/udp 6162/tcp
+VOLUME ["/etc/ssh", "/root/.ssh/authorized_keys"]
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
 
