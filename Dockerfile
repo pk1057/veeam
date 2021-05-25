@@ -6,6 +6,7 @@ RUN sed -i 's/override_install_langs/#override_install_langs/g' /etc/yum.conf
 RUN yum update -y glibc-common
 
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
+RUN localectl set-locale LANG=en_US.UTF-8
 
 RUN   yum install -y \
         openssh-clients openssh-server \
