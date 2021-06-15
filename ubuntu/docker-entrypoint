@@ -25,5 +25,7 @@ fi
 
 systemctl enable veeamservice
 
+/lib/systemd/systemd
+
 exec "$@"
 
