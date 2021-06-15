@@ -45,4 +45,4 @@ VOLUME ["/etc/ssh", "/root/.ssh/authorized_keys"]
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
 
-CMD ["/sbin/init"]
+CMD ["/lib/systemd/systemd"]
