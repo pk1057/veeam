@@ -4,7 +4,7 @@ USER root
 
 #RUN sed -i 's/override_install_langs/#override_install_langs/g' /etc/yum.conf
 #RUN yum update -y glibc-common
-RUN apt-get update && apt-get install -y libfuse2 lvm2 libmagic1 dmidecode openssh-server
+RUN apt-get update && apt-get install -y libfuse2 lvm2 libmagic1 dmidecode openssh-server cron lvm2-dbusd
 
 COPY veeam-nosnap_5.0.0.4318_amd64.deb /tmp
 

@@ -24,6 +24,9 @@ if ! ls /etc/tmpfiles.d/systemd-nologin.conf 1> /dev/null 2>&1; then
 fi
 
 systemctl enable veeamservice
+systemctl enable systemd-logind
+systemctl enable cron
+systemctl enable lvm2-lvmdbusd
 
 exec "$@"
 
