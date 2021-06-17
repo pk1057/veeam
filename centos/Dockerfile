@@ -17,7 +17,9 @@ RUN   yum install -y \
 	libsoap-lite-perl \
 	perl-Data-Dumper \
 	mlocate \
-	libfuse2 lvm2 libmagic1 dmidecode  init sudo openssl sysvinit-tools
+	libfuse2 lvm2 libmagic1 dmidecode  init sudo openssl sysvinit-tools \
+	fuse-libs
+RUN yum update -y
 
 RUN    mkdir /root/.ssh && \
     chmod 700 /root/.ssh && \
@@ -28,6 +30,8 @@ RUN rm -rf /var/log/* && \
 
 COPY sshd_config /etc/ssh/sshd_config
 COPY docker-entrypoint /usr/local/bin/
+COPY *.rpm /tmp
+RUN rpm -i --force /tmp/*.rpm
 RUN chmod 775 /usr/local/bin/docker-entrypoint
 
 EXPOSE 22
